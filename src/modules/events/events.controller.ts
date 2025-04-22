@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -19,16 +20,12 @@ export class EventsController {
 
   @Post('add')
   create(@Body() createEventDto: CreateEventDto) {
-    console.log('createEventDto', createEventDto);
-
     return this.eventsService.create(createEventDto);
   }
 
   @Get()
   async findAll(@Query() args: GetEventsFilterDto) {
     const filters = this.eventsService.filter(args);
-    console.log('filters', filters);
-
     return this.eventsService.findAll(filters);
   }
 
@@ -37,7 +34,7 @@ export class EventsController {
     return this.eventsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
     return this.eventsService.update(id, updateEventDto);
   }

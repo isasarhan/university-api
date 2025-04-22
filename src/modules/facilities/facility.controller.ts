@@ -7,6 +7,7 @@ import {
   Patch,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
 import { FacilityService } from './facility.service';
 import { CreateFacilityDto } from './dto/create-facillity.dto';
@@ -34,7 +35,7 @@ export class FacilityController {
     return this.facilityService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
     @Param('id') id: string,
     @Body() updateUniversityDto: UpdateUniversityDto,

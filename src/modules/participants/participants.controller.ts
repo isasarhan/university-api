@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
 import { ParticipantsService } from './participants.service';
 import { CreateParticipantDto } from './dto/create-participant.dto';
@@ -38,7 +39,7 @@ export class ParticipantsController {
     return this.participantsService.findByMobile(mobile);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
     @Param('id') id: string,
     @Body() updateParticipantDto: UpdateParticipantDto,
