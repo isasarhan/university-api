@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
   IsDate,
   IsMongoId,
   IsNotEmpty,
@@ -32,6 +33,10 @@ export class CreateEventDto {
   @IsOptional()
   @IsMongoId()
   manager?: ObjectId;
+
+  @IsOptional()
+  @IsBoolean()
+  isPrivate?: boolean;
 
   @IsOptional()
   @Type(() => Date)

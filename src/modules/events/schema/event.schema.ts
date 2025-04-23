@@ -31,6 +31,9 @@ export class Event {
   startDate: Date;
 
   @Prop()
+  isPrivate: boolean;
+
+  @Prop()
   endDate: Date;
 
   @Prop({ default: Date.now })
