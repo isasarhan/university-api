@@ -5,12 +5,19 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { User } from './schema/user.schema';
 import { GetUsersFilterDto } from './dto/get-users.dto';
+import { FacilityService } from '../facilities/facility.service';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<User>,
+    private facilityService: FacilityService,
+
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
+    const facility = await this.facilityService.findOne(createUserDto.facility)
+    if (!facility) throw new Error('Facility Not Found!');
+
     const existingUser = await this.userModel
       .findOne({ email: createUserDto.email })
       .exec();
@@ -22,6 +29,7 @@ export class UsersService {
 
     const user = new this.userModel({
       ...createUserDto,
+      facility: facility._id,
     });
 
     return await user.save();
@@ -40,6 +48,7 @@ export class UsersService {
         .find(filters)
         .limit(limit)
         .skip(skip)
+        .select('-password')
         .populate('facility')
         .exec(),
       this.userModel.countDocuments(),
@@ -54,7 +63,8 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    return await this.userModel.findById(id).populate('facility').exec();
+    return await this.userModel.findById(id).select('-password')
+      .populate('facility').exec();
   }
 
   async findByEmail(email: string) {
