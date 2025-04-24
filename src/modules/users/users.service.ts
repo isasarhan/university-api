@@ -72,6 +72,21 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
+    if (updateUserDto.facility) {
+      const facility = await this.facilityService.findOne(updateUserDto.facility)
+
+      if (!facility) 
+        throw new Error('Facility Not Found!');
+      
+      const user = this.userModel.findByIdAndUpdate(id, {
+        ...updateUserDto,
+        facility: facility._id,
+      }, {
+        new: true,
+      });
+      
+      return await user.exec();
+    }
     const user = this.userModel.findByIdAndUpdate(id, updateUserDto, {
       new: true,
     });

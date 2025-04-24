@@ -14,7 +14,7 @@ export class ParticipantsService {
     @InjectModel(Participant.name) private participantModel: Model<Participant>,
     private evetsService: EventsService,
     private studentsService: StudentsService,
-  ) {}
+  ) { }
 
   async create(createParticipantDto: CreateParticipantDto) {
     const event = await this.evetsService.findOne(createParticipantDto.event);
@@ -82,7 +82,11 @@ export class ParticipantsService {
   }
 
   async update(id: string, updateUserDto: UpdateParticipantDto) {
-    const user = this.participantModel.findByIdAndUpdate(id, updateUserDto, {
+    const user = this.participantModel.findByIdAndUpdate(id, {
+      ...updateUserDto,
+      ...(updateUserDto.event && { event: new Types.ObjectId(`${updateUserDto.event}`) }),
+
+    }, {
       new: true,
     });
     return await user.exec();

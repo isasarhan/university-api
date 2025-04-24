@@ -59,6 +59,21 @@ export class EventsService {
   }
 
   async update(id: string | ObjectId, updateEventDto: UpdateEventDto) {
+    if (updateEventDto.facility) {
+      const facility = await this.facilityService.findOne(updateEventDto.facility)
+
+      if (!facility) 
+        throw new Error('Facility Not Found!');
+      
+      const user = this.eventModel.findByIdAndUpdate(id, {
+        ...updateEventDto,
+        facility: facility._id,
+      }, {
+        new: true,
+      });
+      
+      return await user.exec();
+    }
     const event = this.eventModel.findByIdAndUpdate(id, updateEventDto, {
       new: true,
     });
