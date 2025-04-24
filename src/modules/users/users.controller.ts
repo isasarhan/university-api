@@ -32,9 +32,7 @@ export class UserController {
   @Roles(UserRoleEnum.MODERATOR)
   @Get()
   async findAll(@Query() args: GetUsersFilterDto) {
-    const filters = this.usersService.filter(args);
-    console.log('filters', filters);
-    
+    const filters = this.usersService.filter(args);    
     return await this.usersService.findAll(filters);
   }
 
