@@ -43,13 +43,13 @@ export class StudentsService {
     };
   }
   async findOne(id: string) {
-    return await this.studentModel.findById(id).populate('facililty').exec();
+    return await this.studentModel.findById(id).populate('facility').exec();
   }
 
   async findByMobile(mobile: string) {
     return await this.studentModel
       .findOne({ mobile })
-      .populate('facililty')
+      .populate('facility')
       .exec();
   }
 
